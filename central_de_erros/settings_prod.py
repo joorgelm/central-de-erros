@@ -13,4 +13,4 @@ MIDDLEWARE.append('whitenoise.middleware.WhiteNoiseMiddleware')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-ALLOWED_HOSTS = ['https://jlm-central-de-erros.herokuapp.com/']
+ALLOWED_HOSTS = ['https://jlm-central-de-erros.herokuapp.com/', '.herokuapp.com/', 'jlm-central-de-erros.herokuapp.com']
