@@ -25,9 +25,13 @@ class UserViewSet(viewsets.ModelViewSet):
 
     # cadastro usuario
     def create(self, request, *args, **kwargs) -> Response:
-        # permission_classes = [permissions.]
 
-        user = User.objects.create_user(username=request.data['username'], password=request.data['password'])
+        user = User.objects.create_user(
+            username=request.data['username'],
+            password=request.data['password'],
+            email=request.data['email'],
+            is_active=True
+        )
         token = Token.objects.create(user=user)
         data = {
             'id': user.id,
