@@ -2,7 +2,6 @@ from django.db import models
 from django.core.validators import EmailValidator, MinLengthValidator, validate_ipv4_address
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractBaseUser
-from enum import Enum
 
 
 class Base(models.Model):
