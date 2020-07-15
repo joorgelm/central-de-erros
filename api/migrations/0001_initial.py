@@ -63,7 +63,7 @@ class Migration(migrations.Migration):
             name='Event',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('level', models.TextField(choices=[(0, 'INFO'), (1, 'DEBUG'), (2, 'WARNING'), (3, 'ERROR'), (4, 'CRITICAL')], max_length=20, validators=[api.models.Event.action_validator])),
+                ('level', models.TextField(choices=[(0, 'INFO'), (1, 'DEBUG'), (2, 'WARNING'), (3, 'ERROR'), (4, 'CRITICAL')], max_length=20, validators=[api.models.Event.level_validator])),
                 ('data', models.TextField(max_length=20)),
                 ('arquivado', models.BooleanField(default=False)),
                 ('date', models.DateField(auto_now=True)),

@@ -26,7 +26,7 @@ class Agent(Base):
 
 class Event(models.Model):
 
-    ACTIONS = (
+    LEVELS = (
         (0, 'INFO'),
         (1, 'DEBUG'),
         (2, 'WARNING'),
@@ -34,11 +34,11 @@ class Event(models.Model):
         (4, 'CRITICAL'),
     )
 
-    def action_validator(self, action):
-        if action not in self.ACTIONS:
+    def level_validator(level):
+        if level not in range(0, 5):
             raise ValidationError('Action not allowed')
 
-    level = models.TextField(max_length=20, choices=ACTIONS, validators=[action_validator])
+    level = models.TextField(max_length=20, choices=LEVELS, validators=[level_validator])
     data = models.TextField(max_length=20)
     arquivado = models.BooleanField(default=False)
     date = models.DateField(auto_now=True)

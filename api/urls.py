@@ -4,3 +4,4 @@ from .views import *
 router = SimpleRouter()
 router.register('user', UserViewSet)
 router.register('agent', AgentViewSet)
+router.register('event', EventViewSet)

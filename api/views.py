@@ -5,7 +5,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import permissions
 from .serializers import *
-from .models import Agent
+from .models import Agent, Event
 
 
 class UserViewSetPermission(permissions.BasePermission):
@@ -56,3 +56,10 @@ class AgentViewSet(viewsets.ModelViewSet):
 
     queryset = Agent.objects.all()
     serializer_class = AgentSerializer
+
+
+class EventViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
