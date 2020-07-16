@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import permissions
+from rest_framework.decorators import action
 from .serializers import *
 from .models import Agent, Event
 
@@ -56,6 +57,17 @@ class AgentViewSet(viewsets.ModelViewSet):
 
     queryset = Agent.objects.all()
     serializer_class = AgentSerializer
+
+    @action(detail=True, methods=['get'])
+    def events(self, request, pk):
+
+        events = Event.objects.filter(
+            agent_id=pk
+        )
+
+        serializer = EventSerializer(events, many=True)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
 class EventViewSet(viewsets.ModelViewSet):

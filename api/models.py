@@ -38,12 +38,12 @@ class Event(models.Model):
         if level not in range(0, 5):
             raise ValidationError('Action not allowed')
 
-    level = models.TextField(max_length=20, choices=LEVELS, validators=[level_validator])
+    level = models.CharField(max_length=20, choices=LEVELS, validators=[level_validator])
     data = models.TextField(max_length=20)
     arquivado = models.BooleanField(default=False)
     date = models.DateField(auto_now=True)
-    agent = models.ForeignKey(Agent, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    agent = models.ForeignKey(Agent, on_delete=models.CASCADE, related_name='agent')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
 
 
 class Group(Base):

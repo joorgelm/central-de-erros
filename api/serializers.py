@@ -16,6 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
             'email',
             'password'
         )
+        read_only_fields = ['id']
 
 
 class AgentSerializer(serializers.ModelSerializer):
@@ -30,11 +31,18 @@ class AgentSerializer(serializers.ModelSerializer):
             'version',
             'address'
         )
+        read_only_fields = ['id']
 
 
 class EventSerializer(serializers.ModelSerializer):
 
+    # agent = serializers.SerializerMethodField()
+    # user = UserSerializer(many=True)
+    # level = serializers.SerializerMethodField()
+    # data = serializers.SerializerMethodField()
+
     class Meta:
+        ordering = ['-id']
         model = Event
         fields = (
             'id',
@@ -44,3 +52,10 @@ class EventSerializer(serializers.ModelSerializer):
             'agent',
             'user'
         )
+        read_only_fields = ['id']
+
+    # def get_level(self, obj):
+    #     return obj.get().get_level_display()
+    #
+    # def get_data(self, obj):
+    #     return obj.get().data
