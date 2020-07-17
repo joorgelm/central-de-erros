@@ -77,6 +77,5 @@ class EventFrequencySerializer(serializers.Serializer):
     data = serializers.CharField()
     arquivado = serializers.BooleanField()
     date = serializers.DateField()
-    agent_id = serializers.IntegerField()
     user_id = serializers.IntegerField()
     frequency = serializers.IntegerField()

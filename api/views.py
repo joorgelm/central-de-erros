@@ -62,26 +62,29 @@ class AgentViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['get'])
     def events(self, request, pk):
 
-        events = Event.objects.filter(
-            agent_id=pk
-        )
+        query = self.__get_query_events_with_frequency(pk)
 
-        serializer = EventSerializer(events, many=True)
+        events = []
 
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+        for event in Event.objects.raw(query):
+            events.append(event)
+
+        return Response(data=EventFrequencySerializer(events, many=True).data, status=status.HTTP_200_OK)
+
+    @staticmethod
+    def __get_query_events_with_frequency(pk, order_field='frequency'):
+        return 'SELECT id, level, data, arquivado, date, user_id, COUNT(data) as frequency ' \
+               'FROM api_event ' \
+               'WHERE agent_id = ' + str(pk) + ' ' \
+               'GROUP BY data ORDER BY ' + str(order_field)
 
 
 class EventViewSet(viewsets.ModelViewSet):
-
-    # todo: fazer um group by data e retornar
-    #  um campo com a quantidade de vezes que o evento ocorreu
 
     permission_classes = [permissions.IsAuthenticated]
 
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-
-    # Event.objects.values('data', jesus=Count('data')).annotate(Count('data'))
 
     def list(self, request, *args, **kwargs):
 
@@ -92,17 +95,5 @@ class EventViewSet(viewsets.ModelViewSet):
 
         for event in Event.objects.raw(query):
             events.append(event)
-        #
-        #
-        #
-        # serializer = EventSerializer(events, many=True, fields=('id', 'data', 'frequency'))
-        #
-        # print('jesus')
-        #
-        # # events = Event.objects.values('data').annotate(Count('data'))
-        # #
-        # # response = {
-        # #     'data': EventSerializer(events).data
-        # # }
 
         return Response(data=EventFrequencySerializer(events, many=True).data, status=status.HTTP_200_OK)
