@@ -97,6 +97,14 @@ class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
+    def retrieve(self, request, *args, **kwargs):
+
+        event = Event.objects.filter(
+            id=kwargs['pk']
+        ).get()
+
+        return Response(data=EventSerializer(event).data, status=status.HTTP_200_OK)
+
     def list(self, request, *args, **kwargs):
 
         query = 'SELECT id, level, data, arquivado, date, agent_id, user_id, COUNT(data) as frequency ' \

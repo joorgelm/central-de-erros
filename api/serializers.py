@@ -9,7 +9,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         extra_kwargs = {
-            'password': {'write_only': True}
+            'password': {'write_only': True},
+            'username': {'write_only': True}
         }
         model = User
         fields = (
@@ -38,27 +39,10 @@ class AgentSerializer(serializers.ModelSerializer):
 
 class EventSerializer(serializers.ModelSerializer):
 
-    def __init__(self, *args, **kwargs):
-        # Don't pass the 'fields' arg up to the superclass
-        fields = kwargs.pop('fields', None)
-
-        # Instantiate the superclass normally
-        super(EventSerializer, self).__init__(*args, **kwargs)
-
-        if fields is not None:
-            # Drop any fields that are not specified in the `fields` argument.
-            allowed = set(fields)
-            existing = set(self.fields)
-            for field_name in existing - allowed:
-                self.fields.pop(field_name)
-
-    # agent = serializers.SerializerMethodField()
-    # user = UserSerializer(many=True)
-    # level = serializers.SerializerMethodField()
-    # data = serializers.SerializerMethodField()
+    agent = AgentSerializer()
+    user = UserSerializer()
 
     class Meta:
-        ordering = ['-id']
         model = Event
         fields = (
             'id',
@@ -69,6 +53,31 @@ class EventSerializer(serializers.ModelSerializer):
             'user'
         )
         read_only_fields = ['id']
+
+
+# class EventSerializer(serializers.ModelSerializer):
+#
+#     level = serializers.SerializerMethodField()
+#     data = serializers.SerializerMethodField()
+#
+#     class Meta:
+#         ordering = ['-id']
+#         model = Event
+#         fields = (
+#             'id',
+#             'level',
+#             'data',
+#             'arquivado',
+#             'agent_id',
+#             'user_id'
+#         )
+#         read_only_fields = ['id']
+#
+#     def get_level(self, obj):
+#         return obj.get().level
+#
+#     def get_data(self, obj):
+#         return obj.get().data
 
 
 class EventFrequencySerializer(serializers.Serializer):
