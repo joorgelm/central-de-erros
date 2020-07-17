@@ -26,7 +26,6 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    # cadastro usuario
     def create(self, request, *args, **kwargs) -> Response:
 
         user = self.__create_user(request)
@@ -62,7 +61,7 @@ class AgentViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['get'])
     def events(self, request, pk):
 
-        query = self.__get_query_events_with_frequency(pk)
+        query = self.__get_query_events_with_frequency(pk, request.query_params)
 
         events = []
 
@@ -72,11 +71,23 @@ class AgentViewSet(viewsets.ModelViewSet):
         return Response(data=EventFrequencySerializer(events, many=True).data, status=status.HTTP_200_OK)
 
     @staticmethod
-    def __get_query_events_with_frequency(pk, order_field='frequency'):
-        return 'SELECT id, level, data, arquivado, date, user_id, COUNT(data) as frequency ' \
-               'FROM api_event ' \
-               'WHERE agent_id = ' + str(pk) + ' ' \
-               'GROUP BY data ORDER BY ' + str(order_field)
+    def __get_query_events_with_frequency(pk, query_params):
+
+        fields = query_params.keys()
+
+        query = 'SELECT id, level, data, arquivado, date, user_id, COUNT(data) as frequency ' \
+                'FROM api_event WHERE agent_id = ' + str(pk) + ' '
+
+        search_field = query_params['search_field'] if 'search_field' in fields else None
+        search_value = query_params['search_value'] if 'search_value' in fields else None
+        order_field = query_params['order_field'] if 'order_field' in fields else 'frequency'
+
+        if search_field:
+            query += f'AND {search_field} like \'%{search_value}%\' '
+
+        query += f'GROUP BY data ORDER BY {order_field} DESC '
+
+        return query
 
 
 class EventViewSet(viewsets.ModelViewSet):
