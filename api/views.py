@@ -44,9 +44,9 @@ class UserViewSet(viewsets.ModelViewSet):
     def __create_user(request):
 
         user = User.objects.create_user(
-            username=request.titulo['username'],
-            password=request.titulo['password'],
-            email=request.titulo['email'],
+            username=request.data['username'],
+            password=request.data['password'],
+            email=request.data['email'],
             is_active=True
         )
         return user
