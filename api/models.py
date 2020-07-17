@@ -39,7 +39,8 @@ class Event(models.Model):
             raise ValidationError('Action not allowed')
 
     level = models.CharField(max_length=20, choices=LEVELS, validators=[level_validator])
-    data = models.TextField(max_length=20)
+    titulo = models.TextField(max_length=100, default='')
+    detalhes = models.TextField(null=True)
     arquivado = models.BooleanField(default=False)
     date = models.DateField(auto_now=True)
     agent = models.ForeignKey(Agent, on_delete=models.CASCADE, related_name='agent')

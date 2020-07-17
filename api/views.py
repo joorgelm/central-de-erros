@@ -44,9 +44,9 @@ class UserViewSet(viewsets.ModelViewSet):
     def __create_user(request):
 
         user = User.objects.create_user(
-            username=request.data['username'],
-            password=request.data['password'],
-            email=request.data['email'],
+            username=request.titulo['username'],
+            password=request.titulo['password'],
+            email=request.titulo['email'],
             is_active=True
         )
         return user
@@ -75,7 +75,7 @@ class AgentViewSet(viewsets.ModelViewSet):
 
         fields = query_params.keys()
 
-        query = 'SELECT id, level, data, arquivado, date, user_id, COUNT(data) as frequency ' \
+        query = 'SELECT id, level, titulo, detalhes, arquivado, date, user_id, COUNT(data) as frequency ' \
                 'FROM api_event WHERE agent_id = ' + str(pk) + ' '
 
         search_field = query_params['search_field'] if 'search_field' in fields else None

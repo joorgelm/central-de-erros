@@ -47,7 +47,9 @@ class EventSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'level',
-            'data',
+            'titulo',
+            'detalhes',
+            'date',
             'arquivado',
             'agent',
             'user'
@@ -83,7 +85,8 @@ class EventSerializer(serializers.ModelSerializer):
 class EventFrequencySerializer(serializers.Serializer):
     id = serializers.IntegerField()
     level = serializers.IntegerField()
-    data = serializers.CharField()
+    titulo = serializers.CharField()
+    detalhes = serializers.CharField()
     arquivado = serializers.BooleanField()
     date = serializers.DateField()
     user_id = serializers.IntegerField()
