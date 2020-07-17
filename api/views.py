@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.db.models import Count
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.authtoken.models import Token
@@ -71,7 +72,37 @@ class AgentViewSet(viewsets.ModelViewSet):
 
 
 class EventViewSet(viewsets.ModelViewSet):
+
+    # todo: fazer um group by data e retornar
+    #  um campo com a quantidade de vezes que o evento ocorreu
+
     permission_classes = [permissions.IsAuthenticated]
 
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+
+    # Event.objects.values('data', jesus=Count('data')).annotate(Count('data'))
+
+    def list(self, request, *args, **kwargs):
+
+        query = 'SELECT id, level, data, arquivado, date, agent_id, user_id, COUNT(data) as frequency ' \
+                'FROM api_event GROUP BY data'
+
+        events = []
+
+        for event in Event.objects.raw(query):
+            events.append(event)
+        #
+        #
+        #
+        # serializer = EventSerializer(events, many=True, fields=('id', 'data', 'frequency'))
+        #
+        # print('jesus')
+        #
+        # # events = Event.objects.values('data').annotate(Count('data'))
+        # #
+        # # response = {
+        # #     'data': EventSerializer(events).data
+        # # }
+
+        return Response(data=EventFrequencySerializer(events, many=True).data, status=status.HTTP_200_OK)

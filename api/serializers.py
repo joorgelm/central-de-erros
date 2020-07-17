@@ -1,3 +1,5 @@
+from abc import ABC
+
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import Agent, Event
@@ -36,6 +38,20 @@ class AgentSerializer(serializers.ModelSerializer):
 
 class EventSerializer(serializers.ModelSerializer):
 
+    def __init__(self, *args, **kwargs):
+        # Don't pass the 'fields' arg up to the superclass
+        fields = kwargs.pop('fields', None)
+
+        # Instantiate the superclass normally
+        super(EventSerializer, self).__init__(*args, **kwargs)
+
+        if fields is not None:
+            # Drop any fields that are not specified in the `fields` argument.
+            allowed = set(fields)
+            existing = set(self.fields)
+            for field_name in existing - allowed:
+                self.fields.pop(field_name)
+
     # agent = serializers.SerializerMethodField()
     # user = UserSerializer(many=True)
     # level = serializers.SerializerMethodField()
@@ -54,8 +70,13 @@ class EventSerializer(serializers.ModelSerializer):
         )
         read_only_fields = ['id']
 
-    # def get_level(self, obj):
-    #     return obj.get().get_level_display()
-    #
-    # def get_data(self, obj):
-    #     return obj.get().data
+
+class EventFrequencySerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    level = serializers.IntegerField()
+    data = serializers.CharField()
+    arquivado = serializers.BooleanField()
+    date = serializers.DateField()
+    agent_id = serializers.IntegerField()
+    user_id = serializers.IntegerField()
+    frequency = serializers.IntegerField()
