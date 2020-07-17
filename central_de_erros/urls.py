@@ -19,12 +19,15 @@ from api.urls import router
 from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework_swagger.views import get_swagger_view
 
-schema_view = get_swagger_view(title='Central de erros API')
-
-urlpatterns = [
+api = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(router.urls)),
     path('api/v1/auth/', obtain_auth_token, name='api_token_auth'),
     path('auth/', include('rest_framework.urls')),
+]
+
+schema_view = get_swagger_view(title='Central de erros API', patterns=api)
+
+urlpatterns = api + [
     path('api/swagger/', schema_view)
 ]
