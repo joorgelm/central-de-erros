@@ -7,8 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         extra_kwargs = {
-            'password': {'write_only': True},
-            'username': {'write_only': True}
+            'password': {'write_only': True}
         }
         model = User
         fields = (
@@ -66,33 +65,10 @@ class EventSerializer(serializers.ModelSerializer):
             'detalhes',
             'date',
             'arquivado',
-            'agent_id',
-            'user_id'
+            'agent',
+            'user'
         )
         read_only_fields = ['id']
-# class EventSerializer(serializers.ModelSerializer):
-#
-#     level = serializers.SerializerMethodField()
-#     data = serializers.SerializerMethodField()
-#
-#     class Meta:
-#         ordering = ['-id']
-#         model = Event
-#         fields = (
-#             'id',
-#             'level',
-#             'data',
-#             'arquivado',
-#             'agent_id',
-#             'user_id'
-#         )
-#         read_only_fields = ['id']
-#
-#     def get_level(self, obj):
-#         return obj.get().level
-#
-#     def get_data(self, obj):
-#         return obj.get().data
 
 
 class EventFrequencySerializer(serializers.Serializer):

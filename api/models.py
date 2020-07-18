@@ -2,6 +2,7 @@ from django.db import models
 from django.core.validators import EmailValidator, MinLengthValidator, validate_ipv4_address
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import User as AuthUser
 
 
 class Base(models.Model):
@@ -44,7 +45,7 @@ class Event(models.Model):
     arquivado = models.BooleanField(default=False)
     date = models.DateField(auto_now=True)
     agent = models.ForeignKey(Agent, on_delete=models.CASCADE, related_name='agent')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
+    user = models.ForeignKey(AuthUser, on_delete=models.CASCADE, related_name='user')
 
 
 class Group(Base):
@@ -53,4 +54,4 @@ class Group(Base):
 
 class GroupUser(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
