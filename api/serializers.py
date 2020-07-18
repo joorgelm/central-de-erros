@@ -35,7 +35,7 @@ class AgentSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
 
 
-class EventSerializer(serializers.ModelSerializer):
+class EventSerializerDetail(serializers.ModelSerializer):
 
     agent = AgentSerializer()
     user = UserSerializer()
@@ -45,7 +45,7 @@ class EventSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'level',
-            'titulo',
+            'data',
             'detalhes',
             'date',
             'arquivado',
@@ -55,6 +55,21 @@ class EventSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
 
 
+class EventSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Event
+        fields = (
+            'id',
+            'level',
+            'data',
+            'detalhes',
+            'date',
+            'arquivado',
+            'agent_id',
+            'user_id'
+        )
+        read_only_fields = ['id']
 # class EventSerializer(serializers.ModelSerializer):
 #
 #     level = serializers.SerializerMethodField()
@@ -83,7 +98,7 @@ class EventSerializer(serializers.ModelSerializer):
 class EventFrequencySerializer(serializers.Serializer):
     id = serializers.IntegerField()
     level = serializers.IntegerField()
-    titulo = serializers.CharField()
+    data = serializers.CharField()
     detalhes = serializers.CharField()
     arquivado = serializers.BooleanField()
     date = serializers.DateField()

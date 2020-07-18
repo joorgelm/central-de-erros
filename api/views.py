@@ -75,7 +75,7 @@ class AgentViewSet(viewsets.ModelViewSet):
 
         fields = query_params.keys()
 
-        query = 'SELECT id, level, titulo, detalhes, arquivado, date, user_id, COUNT(data) as frequency ' \
+        query = 'SELECT id, level, data, detalhes, arquivado, date, user_id, COUNT(data) as frequency ' \
                 'FROM api_event WHERE agent_id = ' + str(pk) + ' '
 
         search_field = query_params['search_field'] if 'search_field' in fields else None
@@ -103,7 +103,7 @@ class EventViewSet(viewsets.ModelViewSet):
             id=kwargs['pk']
         ).get()
 
-        return Response(data=EventSerializer(event).data, status=status.HTTP_200_OK)
+        return Response(data=EventSerializerDetail(event).data, status=status.HTTP_200_OK)
 
     def list(self, request, *args, **kwargs):
 
