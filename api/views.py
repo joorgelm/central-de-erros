@@ -85,7 +85,7 @@ class AgentViewSet(viewsets.ModelViewSet):
         if search_field:
             query += f'AND {search_field} like \'%{search_value}%\' '
 
-        query += f'GROUP BY data ORDER BY {order_field} DESC '
+        query += f'GROUP BY id, data ORDER BY {order_field} DESC '
 
         return query
 
