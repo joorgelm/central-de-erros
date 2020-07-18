@@ -1,5 +1,5 @@
 from .settings import *
-import dj_database_url
+# import dj_database_url
 
 DEBUG = True
 
