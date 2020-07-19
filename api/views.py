@@ -108,7 +108,7 @@ class EventViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
 
         query = 'SELECT id, level, data, arquivado, date, agent_id, user_id, COUNT(data) as frequency ' \
-                'FROM api_event GROUP BY data'
+                'FROM api_event GROUP BY id, data'
 
         events = []
 
