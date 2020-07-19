@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
+
 from api.urls import router
 from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework_swagger.views import get_swagger_view
@@ -29,5 +31,6 @@ api = [
 schema_view = get_swagger_view(title='Central de erros API', patterns=api)
 
 urlpatterns = api + [
-    path('api/swagger/', schema_view)
+    path('api/swagger/', schema_view),
+    path('', RedirectView.as_view(url='api/swagger/', permanent=False), name='index')
 ]
